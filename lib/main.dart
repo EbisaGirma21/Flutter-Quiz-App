@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+
+// user difined widgets
 import './question.dart';
+import './answer.dart';
 
 // void main() {
 //   runApp(MyApp());
@@ -7,7 +10,7 @@ import './question.dart';
 void main() => runApp(const MyApp());
 
 class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+  const MyApp();
 
   @override
   State<StatefulWidget> createState() {
@@ -27,34 +30,33 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     var questions = [
-      'What1\'s you favorite color?',
-      'What\'s your favorite animal?'
+      {
+        'questionText': 'What\'s you favorite color?',
+        'answers': ['Green', 'Yellow', 'Red', 'Blue']
+      },
+      {
+        'questionText': 'What\'s your favorite animal?',
+        'answers': ['Monkey', 'Lion', 'Lepord', 'Rabbit']
+      },
+      {
+        'questionText': 'Who\'s your favorite favorite instructor?',
+        'answers': ['Mr.Joseph', 'Mr. Melaku', 'Mr. Sime', 'Mr. Asmeraw']
+      }
     ];
 
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Quiz App'),
+          title: Text('Quiz App'),
         ),
         body: Column(children: [
           Question(
-            questions[_questionIndex],
+            questions[_questionIndex]['questionText'] as String,
           ),
-          FilledButton(
-            onPressed: _answerQuestion,
-            child: const Text('Answer 1'),
-          ),
-          FilledButton(
-            onPressed: () => print('Answer 2 Chosen!'),
-            child: const Text('Answer 2'),
-          ),
-          FilledButton(
-            onPressed: () {
-              // ...
-              print('Answer 3 Chosen!');
-            },
-            child: const Text('Answer 3'),
-          ),
+          ...(questions[_questionIndex]['answers'] as List<String>)
+              .map((answer) {
+            return Answer(_answerQuestion, answer);
+          }).toList()
         ]),
       ),
     );
